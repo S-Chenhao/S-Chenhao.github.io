@@ -202,9 +202,11 @@ export default function Home() {
   return (
     <main id="top" className="site-shell">
       <header className="topbar">
-        <a className="wordmark" href="#top" aria-label="Chenhao Si home">
+        <a className="wordmark" href="#top" aria-label="Chenhao Si 司辰昊 home">
           <span className="wordmark-mark">CS</span>
-          <span className="wordmark-copy">Scientific ML</span>
+          <span className="wordmark-copy">
+            {language === 'zh' ? '司辰昊 · 科学机器学习' : 'Chenhao Si · Scientific ML'}
+          </span>
         </a>
 
         <nav className="desktop-nav" aria-label="Primary navigation">
@@ -257,6 +259,7 @@ export default function Home() {
             Chenhao
             <span>Si</span>
           </h1>
+          <p className="chinese-name">司辰昊</p>
           <p className="role-line">{t.role}</p>
           <p className="school-line">{t.school}</p>
           <p className="intro">{t.intro}</p>
@@ -275,10 +278,18 @@ export default function Home() {
           </div>
         </div>
 
-        <aside className="signal-card" aria-label={t.nowLabel}>
-          <div className="signal-index">2026—01</div>
-          <div className="signal-plot" aria-hidden="true">
-            <i /><i /><i /><i /><i /><i /><i /><i /><i />
+        <aside
+          className="signal-card portrait-card"
+          aria-label={language === 'zh' ? '司辰昊的个人照片' : 'Portrait of Chenhao Si'}
+        >
+          <div className="signal-index">PROFILE—01</div>
+          <div className="portrait-frame">
+            <img
+              className="profile-photo"
+              src="/profile.jpg"
+              alt={language === 'zh' ? '司辰昊个人照片' : 'Portrait of Chenhao Si'}
+            />
+            <span className="portrait-tag">CUHK–SHENZHEN · PHD</span>
           </div>
           <p>{t.nowLabel}</p>
           <h2>{t.nowTitle}</h2>
@@ -417,7 +428,7 @@ export default function Home() {
           </a>
         </div>
         <footer>
-          <span>© 2026 Chenhao Si</span>
+          <span>© 2026 Chenhao Si · 司辰昊</span>
           <span>{t.sourceNote}</span>
           <a href="#top">↑ TOP</a>
         </footer>

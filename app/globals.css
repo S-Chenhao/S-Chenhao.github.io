@@ -93,7 +93,13 @@ button { font: inherit; }
   font-size: clamp(76px, 11vw, 174px); line-height: .74; letter-spacing: -.075em; font-weight: 400;
 }
 .hero h1 span { display: block; margin-left: .78em; color: var(--cobalt); font-style: italic; }
-.role-line { margin: 38px 0 6px; font-size: 15px; font-weight: 800; letter-spacing: .03em; }
+.chinese-name {
+  width: max-content; margin: 26px 0 0; padding: 7px 11px 7px 14px;
+  border: 1px solid var(--ink); color: var(--ink);
+  font-family: "Songti SC", "STSong", "Microsoft YaHei", serif;
+  font-size: clamp(20px, 2vw, 28px); font-weight: 700; letter-spacing: .18em;
+}
+.role-line { margin: 22px 0 6px; font-size: 15px; font-weight: 800; letter-spacing: .03em; }
 .school-line { margin: 0; color: var(--muted); font-size: 14px; }
 .intro { max-width: 665px; margin: 27px 0 0; font-family: Georgia, "Songti SC", serif; font-size: clamp(20px, 2vw, 29px); line-height: 1.35; }
 
@@ -117,12 +123,21 @@ button { font: inherit; }
   box-shadow: 17px 17px 0 var(--acid);
 }
 .signal-index { font: 11px/1 "Courier New", monospace; letter-spacing: .16em; }
-.signal-plot { height: 188px; display: flex; align-items: end; gap: 6px; padding: 35px 8px 24px; border-bottom: 1px solid rgba(255,255,255,.4); }
-.signal-plot i { display: block; width: 9%; background: rgba(255,255,255,.95); height: 20%; }
-.signal-plot i:nth-child(2) { height: 31%; }.signal-plot i:nth-child(3) { height: 53%; }
-.signal-plot i:nth-child(4) { height: 79%; }.signal-plot i:nth-child(5) { height: 96%; background: var(--acid); }
-.signal-plot i:nth-child(6) { height: 76%; }.signal-plot i:nth-child(7) { height: 47%; }
-.signal-plot i:nth-child(8) { height: 29%; }.signal-plot i:nth-child(9) { height: 17%; }
+.portrait-card { overflow: visible; }
+.portrait-frame {
+  height: 248px; margin-top: 18px; position: relative; overflow: hidden;
+  border: 1px solid rgba(255,255,255,.55); background: var(--ink);
+}
+.profile-photo {
+  display: block; width: 100%; height: 100%; object-fit: cover; object-position: 50% 25%;
+  filter: saturate(.82) contrast(1.04); transition: transform .45s ease, filter .45s ease;
+}
+.portrait-card:hover .profile-photo { transform: scale(1.025); filter: saturate(1) contrast(1.02); }
+.portrait-tag {
+  position: absolute; right: 0; bottom: 0; padding: 7px 9px;
+  background: var(--acid); color: var(--ink);
+  font: 700 9px/1 "Courier New", monospace; letter-spacing: .11em;
+}
 .signal-card p { margin: 22px 0 11px; text-transform: uppercase; letter-spacing: .18em; font-size: 10px; font-weight: 800; color: var(--acid); }
 .signal-card h2 { margin: 0; max-width: 260px; font-family: Georgia, "Songti SC", serif; font-weight: 400; font-size: 28px; line-height: 1.08; }
 .signal-card > span { display: block; margin-top: 16px; font-size: 11px; opacity: .75; }
@@ -267,6 +282,7 @@ button { font: inherit; }
   .intro { font-size: 21px; }
   .research-axis ol { grid-template-columns: 1fr; gap: 17px; }
   .signal-card { min-height: 330px; }
+  .portrait-frame { height: 300px; }
   .featured-work { min-height: auto; padding-top: 90px; padding-bottom: 90px; }
   .cauchy-study { min-height: 360px; }
   .paper-links { flex-direction: column; align-items: flex-start; gap: 12px; }
