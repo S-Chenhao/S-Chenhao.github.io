@@ -1,38 +1,59 @@
 {
   "schemaVersion": 1,
   "scholarId": "Vqf7dwEAAAAJ",
-  "updatedAt": null,
-  "snapshotMonth": "2026-09",
-  "totalCitations": 59,
+  "source": "serpapi",
+  "updatedAt": "2026-09-25T14:06:03Z",
+  "totalCitations": 61,
   "hIndex": 3,
   "publications": [
     {
-      "title": "Convolution-weighting method for the physics-informed neural network: A primal-dual optimization perspective",
-      "citations": 11
-    },
-    {
-      "title": "Complex physics-informed neural network",
-      "citations": 12
-    },
-    {
-      "title": "From Non-Convex Self-Concordant Regularization to Scalable Quasi-Newton Training of PINNs",
-      "citations": 1
-    },
-    {
-      "title": "Lightweight Geometric Adaptation for Training Physics-Informed Neural Networks",
-      "citations": 1
-    },
-    {
+      "scholarId": "Vqf7dwEAAAAJ:u5HHmVD_uO8C",
       "title": "Initialization-enhanced physics-informed neural network with domain decomposition (IDPINN)",
-      "citations": 30
+      "citations": 31,
+      "url": "https://scholar.google.com/citations?view_op=view_citation&hl=en&user=Vqf7dwEAAAAJ&citation_for_view=Vqf7dwEAAAAJ%3Au5HHmVD_uO8C",
+      "year": 2025
     },
     {
+      "scholarId": "Vqf7dwEAAAAJ:2osOgNQ5qMEC",
+      "title": "Convolution-weighting method for the physics-informed neural network: A primal-dual optimization perspective",
+      "citations": 12,
+      "url": "https://scholar.google.com/citations?view_op=view_citation&hl=en&user=Vqf7dwEAAAAJ&citation_for_view=Vqf7dwEAAAAJ%3A2osOgNQ5qMEC",
+      "year": 2026
+    },
+    {
+      "scholarId": "Vqf7dwEAAAAJ:d1gkVwhDpl0C",
+      "title": "Complex physics-informed neural network",
+      "citations": 12,
+      "url": "https://scholar.google.com/citations?view_op=view_citation&hl=en&user=Vqf7dwEAAAAJ&citation_for_view=Vqf7dwEAAAAJ%3Ad1gkVwhDpl0C",
+      "year": 2026
+    },
+    {
+      "scholarId": "Vqf7dwEAAAAJ:qjMakFHDy7sC",
       "title": "APOD: Adaptive PDE-observation diffusion for physics-constrained sampling",
-      "citations": 3
+      "citations": 3,
+      "url": "https://scholar.google.com/citations?view_op=view_citation&hl=en&user=Vqf7dwEAAAAJ&citation_for_view=Vqf7dwEAAAAJ%3AqjMakFHDy7sC",
+      "year": 2025
     },
     {
-      "title": "AutoBalance: An automatic balancing framework for training physics-informed neural networks",
-      "citations": 1
+      "scholarId": "Vqf7dwEAAAAJ:Y0pCki6q_DkC",
+      "title": "From Non-Convex Self-Concordant Regularization to Scalable Quasi-Newton Training of PINNs",
+      "citations": 1,
+      "url": "https://scholar.google.com/citations?view_op=view_citation&hl=en&user=Vqf7dwEAAAAJ&citation_for_view=Vqf7dwEAAAAJ%3AY0pCki6q_DkC",
+      "year": 2026
+    },
+    {
+      "scholarId": "Vqf7dwEAAAAJ:Tyk-4Ss8FVUC",
+      "title": "Lightweight Geometric Adaptation for Training Physics-Informed Neural Networks",
+      "citations": 1,
+      "url": "https://scholar.google.com/citations?view_op=view_citation&hl=en&user=Vqf7dwEAAAAJ&citation_for_view=Vqf7dwEAAAAJ%3ATyk-4Ss8FVUC",
+      "year": 2026
+    },
+    {
+      "scholarId": "Vqf7dwEAAAAJ:IjCSPb-OGe4C",
+      "title": "AutoBalance: an automatic balancing framework for training physics-informed neural networks",
+      "citations": 1,
+      "url": "https://scholar.google.com/citations?view_op=view_citation&hl=en&user=Vqf7dwEAAAAJ&citation_for_view=Vqf7dwEAAAAJ%3AIjCSPb-OGe4C",
+      "year": 2025
     }
   ]
 }
