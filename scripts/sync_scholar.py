@@ -173,14 +173,27 @@ def parse_page(html: str, scholar_id: str, *, start: int = 0) -> ProfilePage:
         if (start or has_more or metrics["citations"] or metrics["h-index"]
                 or not any("no articles" in marker.text().casefold() for marker in empty_markers)):
             raise SyncError("Empty publication table is not an explicit empty profile")
-    # This visible range can reveal a truncated page even if the button is disabled.
+    # The footer is a presentation hint, not a required pagination field: it can
+    # be empty or include labels/directional marks in server-rendered HTML.
+    # Keep checking explicit numeric ranges, in addition to the required row,
+    # Show more, profile, metric, and cross-page checks above/below.
     ranges = root.find_all(id="gsc_a_nn")
     if len(ranges) > 1:
         raise SyncError("Duplicate publication range")
     if ranges and publications:
-        visible_range = re.fullmatch(r"\s*([0-9,]+)\s*[–—-]\s*([0-9,]+)\s*", ranges[0].text())
-        if not visible_range or (integer(visible_range[1], "range start"), integer(visible_range[2], "range end")) != (start + 1, start + len(publications)):
-            raise SyncError("Publication range does not match the rows received")
+        range_text = "".join(char for char in ranges[0].text()
+                             if unicodedata.category(char) != "Cf").strip()
+        visible_range = re.search(r"(?<![0-9,])([0-9][0-9,]*)\s*[–—-]\s*([0-9][0-9,]*)(?![0-9,])", range_text)
+        if visible_range:
+            received = (integer(visible_range[1], "range start"),
+                        integer(visible_range[2], "range end"))
+            expected = (start + 1, start + len(publications))
+            if received != expected:
+                raise SyncError(f"Publication range does not match the rows received: "
+                                f"label={range_text!r}, expected={expected}, rows={len(publications)}")
+        elif range_text:
+            print(f"Scholar footer has no numeric range: {range_text!r}; "
+                  "validated publication rows and Show more control instead", file=sys.stderr)
     return ProfilePage(metrics["citations"], metrics["h-index"], publications, has_more)
 
 

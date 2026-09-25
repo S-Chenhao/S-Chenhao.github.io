@@ -1,6 +1,8 @@
 """Offline fixtures covering failure modes that must not erase published data."""
 
 from html import escape
+from contextlib import redirect_stderr
+from io import StringIO
 import json
 from pathlib import Path
 import tempfile
@@ -89,6 +91,26 @@ class ParseTests(unittest.TestCase):
     def test_short_nonterminal_page_is_rejected(self):
         with self.assertRaisesRegex(SyncError, "incomplete"):
             parse_page(profile([article(1)], more=True), SCHOLAR_ID)
+
+    def test_footer_presentation_does_not_invalidate_complete_rows(self):
+        good = profile([article(1), article(2), article(3)], citations="7", h_index="1")
+        for footer in ["", "\u200e1–3\u200e", "\u202a1–3\u202c", "Articles 1 – 3", "3 articles"]:
+            with self.subTest(footer=footer), redirect_stderr(StringIO()):
+                page = parse_page(good.replace("1–3", footer), SCHOLAR_ID)
+                self.assertEqual(len(page.publications), 3)
+                self.assertEqual((page.total_citations, page.h_index), (7, 1))
+                self.assertFalse(page.has_more)
+
+    def test_decorated_inconsistent_range_is_still_rejected_with_diagnostics(self):
+        good = profile([article(1)])
+        for footer in ["\u200e1–7\u200e", "Articles 1–7", "2–2"]:
+            with self.subTest(footer=footer), self.assertRaisesRegex(SyncError, r"expected=\(1, 1\), rows=1"):
+                parse_page(good.replace("1–1", footer), SCHOLAR_ID)
+
+    def test_empty_footer_does_not_hide_incomplete_nonterminal_page(self):
+        html = profile([article(1)], more=True).replace("1–1", "")
+        with self.assertRaisesRegex(SyncError, "incomplete"):
+            parse_page(html, SCHOLAR_ID)
 
     def test_only_explicit_empty_profile_is_accepted(self):
         self.assertEqual(parse_page(profile([]), SCHOLAR_ID).publications, [])
