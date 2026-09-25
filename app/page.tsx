@@ -1,6 +1,9 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import publications from '../data/publications.json';
+import scholar from '../public/scholar.json';
+import { formatScholarUpdatedAt, isScholarStale, publicationCitations } from '../lib/scholar';
 
 type Language = 'en' | 'zh';
 
@@ -25,14 +28,18 @@ const copy = {
       'compleX-PINN introduces a learnable activation inspired by the Cauchy integral formula, delivering high accuracy with a compact architecture.',
     paper: 'Read paper',
     code: 'View code',
-    metricsLabel: 'Scholar snapshot · Sep 2026',
+    metricsLabel: 'Scholar metrics',
+    snapshotLabel: 'Scholar snapshot',
+    lastSynced: 'Last successful sync',
+    awaitingSync: 'Awaiting the first successful automatic sync.',
+    retainedData: 'No successful sync in over 7 days; showing the last saved data.',
     metricCitations: 'citations',
     metricH: 'h-index',
     metricWorks: 'listed works',
-    publicationsLabel: 'Publication field / all 07',
+    publicationsLabel: 'Selected publications',
     publicationsTitle: 'Architectures, optimization, and generative scientific models.',
     publicationsIntro:
-      'A compact record of peer-reviewed articles, workshop work, and current preprints. Citation counts are a September 2026 snapshot; Google Scholar remains the live source.',
+      'Selected articles, workshop work, and preprints. Scholar metrics and citation counts are checked automatically each day; new papers are added here after review. An unavailable citation count is shown as —; see Google Scholar for the complete record.',
     citations: 'citations',
     open: 'Open',
     aboutLabel: 'Position / trajectory',
@@ -51,7 +58,7 @@ const copy = {
     email: 'Email',
     github: 'GitHub',
     orcid: 'ORCID',
-    sourceNote: 'Publication record verified against Google Scholar.',
+    sourceNote: 'Scholar data checked daily · New papers reviewed before listing.',
   },
   zh: {
     nav: { about: '简介', work: '研究', publications: '论文', scholar: '学术主页' },
@@ -73,14 +80,18 @@ const copy = {
       'compleX-PINN 引入受 Cauchy 积分公式启发的可学习激活函数，以紧凑架构实现高精度数值求解。',
     paper: '阅读论文',
     code: '查看代码',
-    metricsLabel: '学术指标快照 · 2026 年 9 月',
+    metricsLabel: '学术指标',
+    snapshotLabel: '学术指标快照',
+    lastSynced: '最近成功同步',
+    awaitingSync: '等待首次自动同步成功。',
+    retainedData: '已超过 7 天未成功同步，现保留上次数据。',
     metricCitations: '引用',
     metricH: 'h 指数',
     metricWorks: '收录成果',
-    publicationsLabel: '论文坐标 / 共 07 项',
+    publicationsLabel: '精选论文',
     publicationsTitle: '从模型架构、优化方法到生成式科学计算。',
     publicationsIntro:
-      '这里汇总已发表论文、会议研讨会成果与近期预印本。引用次数为 2026 年 9 月快照，实时数据请以谷歌学术为准。',
+      '这里展示精选论文、会议研讨会成果与预印本。学术指标和引用次数每天自动检查更新，新论文经确认后加入。未能匹配的引用次数显示为 —；完整成果请查看谷歌学术。',
     citations: '次引用',
     open: '打开',
     aboutLabel: '学术阶段 / 研究轨迹',
@@ -99,98 +110,34 @@ const copy = {
     email: '邮箱',
     github: 'GitHub',
     orcid: 'ORCID',
-    sourceNote: '论文记录已根据谷歌学术核对。',
+    sourceNote: '学术数据每日自动检查 · 新论文确认后展示。',
   },
 };
 
-const publications = [
-  {
-    year: '2026',
-    type: 'JOURNAL',
-    title: 'Convolution-weighting method for the physics-informed neural network: A primal-dual optimization perspective',
-    titleZh: '卷积加权物理信息神经网络：原始—对偶优化视角',
-    authors: 'Chenhao Si, Ming Yan',
-    venue: 'Journal of Computational Physics 555, 114773',
-    citations: 11,
-    url: 'https://doi.org/10.1016/j.jcp.2026.114773',
-  },
-  {
-    year: '2026',
-    type: 'JOURNAL',
-    title: 'Complex physics-informed neural network',
-    titleZh: '复数物理信息神经网络',
-    authors: 'Chenhao Si, Ming Yan, Xin Li, Zhihong Xia',
-    venue: 'Journal of Computational Physics 553, 114713',
-    citations: 12,
-    url: 'https://doi.org/10.1016/j.jcp.2026.114713',
-    code: 'https://github.com/S-Chenhao/compleX-PINN',
-  },
-  {
-    year: '2026',
-    type: 'PREPRINT',
-    title: 'From Non-Convex Self-Concordant Regularization to Scalable Quasi-Newton Training of PINNs',
-    titleZh: '从非凸自协调正则化到 PINN 的可扩展拟牛顿训练',
-    authors: 'Chenhao Si, Kang An, Shiqian Ma, Ming Yan',
-    venue: 'arXiv:2608.04206',
-    citations: 1,
-    url: 'https://arxiv.org/abs/2608.04206',
-  },
-  {
-    year: '2026',
-    type: 'PREPRINT',
-    title: 'Lightweight Geometric Adaptation for Training Physics-Informed Neural Networks',
-    titleZh: '用于训练物理信息神经网络的轻量级几何自适应',
-    authors: 'Kang An, Chenhao Si, Shiqian Ma, Ming Yan',
-    venue: 'arXiv:2604.15392',
-    citations: 1,
-    url: 'https://arxiv.org/abs/2604.15392',
-  },
-  {
-    year: '2025',
-    type: 'JOURNAL',
-    title: 'Initialization-enhanced physics-informed neural network with domain decomposition (IDPINN)',
-    titleZh: '基于区域分解的初始化增强型物理信息神经网络（IDPINN）',
-    authors: 'Chenhao Si, Ming Yan',
-    venue: 'Journal of Computational Physics 530, 113914',
-    citations: 30,
-    url: 'https://doi.org/10.1016/j.jcp.2025.113914',
-  },
-  {
-    year: '2025',
-    type: 'WORKSHOP',
-    title: 'APOD: Adaptive PDE-observation diffusion for physics-constrained sampling',
-    titleZh: 'APOD：面向物理约束采样的自适应 PDE—观测扩散',
-    authors: 'Ruichen Xu, Haochun Wang, Georgios Kementzidis, Chenhao Si, Yuefan Deng',
-    venue: 'ICML Workshop on Assessing World Models',
-    citations: 3,
-    url: 'https://openreview.net/forum?id=Z1J7LJGDxH',
-  },
-  {
-    year: '2025',
-    type: 'PREPRINT',
-    title: 'AutoBalance: An automatic balancing framework for training physics-informed neural networks',
-    titleZh: 'AutoBalance：物理信息神经网络训练的自动平衡框架',
-    authors: 'Kang An, Chenhao Si, Ming Yan, Shiqian Ma',
-    venue: 'arXiv:2510.06684',
-    citations: 1,
-    url: 'https://arxiv.org/abs/2510.06684',
-  },
-];
+
 
 export default function Home() {
   const [language, setLanguage] = useState<Language>('en');
+  const [scholarStale, setScholarStale] = useState(false);
   const t = copy[language];
+  const syncedAt = formatScholarUpdatedAt(scholar.updatedAt);
+  const snapshotMonth = 'snapshotMonth' in scholar ? String(scholar.snapshotMonth) : '2026-09';
+  const metricsLabel = syncedAt ? t.metricsLabel : `${t.snapshotLabel} · ${snapshotMonth}`;
 
   useEffect(() => {
-    const saved = window.localStorage.getItem('chenhao-language');
-    const preferred: Language =
-      saved === 'zh' || saved === 'en'
-        ? saved
-        : window.navigator.language.toLowerCase().startsWith('zh')
-          ? 'zh'
-          : 'en';
-    setLanguage(preferred);
-    document.documentElement.lang = preferred === 'zh' ? 'zh-CN' : 'en';
+    const frame = window.requestAnimationFrame(() => {
+      const saved = window.localStorage.getItem('chenhao-language');
+      const preferred: Language =
+        saved === 'zh' || saved === 'en'
+          ? saved
+          : window.navigator.language.toLowerCase().startsWith('zh')
+            ? 'zh'
+            : 'en';
+      setLanguage(preferred);
+      setScholarStale(isScholarStale(scholar.updatedAt, Date.now()));
+      document.documentElement.lang = preferred === 'zh' ? 'zh-CN' : 'en';
+    });
+    return () => window.cancelAnimationFrame(frame);
   }, []);
 
   const chooseLanguage = (next: Language) => {
@@ -334,12 +281,18 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="metrics-band" aria-label={t.metricsLabel}>
-        <p>{t.metricsLabel}</p>
+      <section className="metrics-band" aria-label={metricsLabel}>
+        <p>
+          {metricsLabel}
+          <span>
+            {syncedAt ? `${t.lastSynced}: ${syncedAt} (Asia/Shanghai, UTC+8)` : t.awaitingSync}
+          </span>
+          {scholarStale && <span role="status">{t.retainedData}</span>}
+        </p>
         <dl>
-          <div><dt>{t.metricCitations}</dt><dd>59</dd></div>
-          <div><dt>{t.metricH}</dt><dd>3</dd></div>
-          <div><dt>{t.metricWorks}</dt><dd>7</dd></div>
+          <div><dt>{t.metricCitations}</dt><dd>{scholar.totalCitations}</dd></div>
+          <div><dt>{t.metricH}</dt><dd>{scholar.hIndex}</dd></div>
+          <div><dt>{t.metricWorks}</dt><dd>{scholar.publications.length}</dd></div>
         </dl>
         <a
           href="https://scholar.google.com/citations?user=Vqf7dwEAAAAJ&hl=en"
@@ -352,7 +305,7 @@ export default function Home() {
 
       <section id="publications" className="publications-section" aria-labelledby="publications-title">
         <div className="publication-heading">
-          <p className="eyebrow"><span>03</span>{t.publicationsLabel}</p>
+          <p className="eyebrow"><span>03</span>{t.publicationsLabel} / {String(publications.length).padStart(2, '0')}</p>
           <h2 id="publications-title">{t.publicationsTitle}</h2>
           <p>{t.publicationsIntro}</p>
         </div>
@@ -370,7 +323,7 @@ export default function Home() {
                   <span className="publication-venue">{publication.venue}</span>
                 </span>
                 <span className="publication-meta">
-                  <span>{publication.citations} {t.citations}</span>
+                  <span>{publicationCitations(publication, scholar) ?? '—'} {t.citations}</span>
                   <span>{t.open} ↗</span>
                 </span>
               </a>

@@ -1,0 +1,80 @@
+[
+  {
+    "year": "2026",
+    "type": "JOURNAL",
+    "title": "Convolution-weighting method for the physics-informed neural network: A primal-dual optimization perspective",
+    "titleZh": "卷积加权物理信息神经网络：原始—对偶优化视角",
+    "authors": "Chenhao Si, Ming Yan",
+    "venue": "Journal of Computational Physics 555, 114773",
+    "citations": 11,
+    "url": "https://doi.org/10.1016/j.jcp.2026.114773",
+    "citationAsOf": "2026-09"
+  },
+  {
+    "year": "2026",
+    "type": "JOURNAL",
+    "title": "Complex physics-informed neural network",
+    "titleZh": "复数物理信息神经网络",
+    "authors": "Chenhao Si, Ming Yan, Xin Li, Zhihong Xia",
+    "venue": "Journal of Computational Physics 553, 114713",
+    "citations": 12,
+    "url": "https://doi.org/10.1016/j.jcp.2026.114713",
+    "code": "https://github.com/S-Chenhao/compleX-PINN",
+    "citationAsOf": "2026-09"
+  },
+  {
+    "year": "2026",
+    "type": "PREPRINT",
+    "title": "From Non-Convex Self-Concordant Regularization to Scalable Quasi-Newton Training of PINNs",
+    "titleZh": "从非凸自协调正则化到 PINN 的可扩展拟牛顿训练",
+    "authors": "Chenhao Si, Kang An, Shiqian Ma, Ming Yan",
+    "venue": "arXiv:2608.04206",
+    "citations": 1,
+    "url": "https://arxiv.org/abs/2608.04206",
+    "citationAsOf": "2026-09"
+  },
+  {
+    "year": "2026",
+    "type": "PREPRINT",
+    "title": "Lightweight Geometric Adaptation for Training Physics-Informed Neural Networks",
+    "titleZh": "用于训练物理信息神经网络的轻量级几何自适应",
+    "authors": "Kang An, Chenhao Si, Shiqian Ma, Ming Yan",
+    "venue": "arXiv:2604.15392",
+    "citations": 1,
+    "url": "https://arxiv.org/abs/2604.15392",
+    "citationAsOf": "2026-09"
+  },
+  {
+    "year": "2025",
+    "type": "JOURNAL",
+    "title": "Initialization-enhanced physics-informed neural network with domain decomposition (IDPINN)",
+    "titleZh": "基于区域分解的初始化增强型物理信息神经网络（IDPINN）",
+    "authors": "Chenhao Si, Ming Yan",
+    "venue": "Journal of Computational Physics 530, 113914",
+    "citations": 30,
+    "url": "https://doi.org/10.1016/j.jcp.2025.113914",
+    "citationAsOf": "2026-09"
+  },
+  {
+    "year": "2025",
+    "type": "WORKSHOP",
+    "title": "APOD: Adaptive PDE-observation diffusion for physics-constrained sampling",
+    "titleZh": "APOD：面向物理约束采样的自适应 PDE—观测扩散",
+    "authors": "Ruichen Xu, Haochun Wang, Georgios Kementzidis, Chenhao Si, Yuefan Deng",
+    "venue": "ICML Workshop on Assessing World Models",
+    "citations": 3,
+    "url": "https://openreview.net/forum?id=Z1J7LJGDxH",
+    "citationAsOf": "2026-09"
+  },
+  {
+    "year": "2025",
+    "type": "PREPRINT",
+    "title": "AutoBalance: An automatic balancing framework for training physics-informed neural networks",
+    "titleZh": "AutoBalance：物理信息神经网络训练的自动平衡框架",
+    "authors": "Kang An, Chenhao Si, Ming Yan, Shiqian Ma",
+    "venue": "arXiv:2510.06684",
+    "citations": 1,
+    "url": "https://arxiv.org/abs/2510.06684",
+    "citationAsOf": "2026-09"
+  }
+]

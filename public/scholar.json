@@ -1,0 +1,38 @@
+{
+  "schemaVersion": 1,
+  "scholarId": "Vqf7dwEAAAAJ",
+  "updatedAt": null,
+  "snapshotMonth": "2026-09",
+  "totalCitations": 59,
+  "hIndex": 3,
+  "publications": [
+    {
+      "title": "Convolution-weighting method for the physics-informed neural network: A primal-dual optimization perspective",
+      "citations": 11
+    },
+    {
+      "title": "Complex physics-informed neural network",
+      "citations": 12
+    },
+    {
+      "title": "From Non-Convex Self-Concordant Regularization to Scalable Quasi-Newton Training of PINNs",
+      "citations": 1
+    },
+    {
+      "title": "Lightweight Geometric Adaptation for Training Physics-Informed Neural Networks",
+      "citations": 1
+    },
+    {
+      "title": "Initialization-enhanced physics-informed neural network with domain decomposition (IDPINN)",
+      "citations": 30
+    },
+    {
+      "title": "APOD: Adaptive PDE-observation diffusion for physics-constrained sampling",
+      "citations": 3
+    },
+    {
+      "title": "AutoBalance: An automatic balancing framework for training physics-informed neural networks",
+      "citations": 1
+    }
+  ]
+}

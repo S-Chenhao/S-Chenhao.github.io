@@ -1,65 +1,78 @@
 # Chenhao Si Academic Homepage
 
-原创中英双语个人学术主页，针对 GitHub Pages 配置。页面采用单页编辑式设计，右上角可即时切换英文与中文，语言选择会保存在当前浏览器。
+中英双语个人学术主页，使用 Next.js 静态导出和 GitHub Pages 发布。
 
-## 已收录内容
+- 主页：https://s-chenhao.github.io/
+- Google Scholar：https://scholar.google.com/citations?user=Vqf7dwEAAAAJ&hl=en
 
-- Chenhao Si，香港中文大学（深圳）数据科学学院 2022 级博士生
-- Scientific Machine Learning、AI for Science、Physics-informed Learning
-- Google Scholar 当前列出的 7 项成果
-- Google Scholar 2026 年 9 月指标快照：59 citations、h-index 3
-- GitHub、Google Scholar、ORCID 和公开学术邮箱
-- 1200 × 630 社交分享预览图
-- 桌面与移动端响应式布局
+## Scholar 自动更新
 
-## 本地预览
+`.github/workflows/deploy-pages.yml` 每天 **北京时间 08:23（UTC 00:23）** 尝试同步，GitHub 的定时任务可能延迟。向 `main` 推送修改或手动运行该 workflow 也会同步并发布。
 
-需要 Node.js 22.13 或更高版本以及 pnpm。
+流程：
 
-```bash
-pnpm install
-pnpm run dev
-```
+1. 从固定的公开 Scholar 账号 `Vqf7dwEAAAAJ` 获取完整论文列表、总引用数与 h-index。
+2. 校验作者、指标、分页完整性和每篇论文的数据；全部有效后才更新 `public/scholar.json`。
+3. 将 Scholar 中尚未列入主页的论文写入 `data/scholar-pending.json`，供确认。
+4. 将数据提交到 `main`，用这份数据重新构建和发布主页。
 
-浏览器访问终端显示的本地地址。生成 GitHub Pages 静态文件：
+主页展示最近一次**成功获取数据的时间**，时区为北京时间。首次同步尚未成功时，继续显示原来的 2026 年 9 月快照。同步失败时不会把旧值改成零，也不会更新成功时间；正常的网站修改仍可使用上次数据发布。失败会显示在 GitHub Actions 中，下一次定时运行会重试。超过 7 天没有成功同步，主页会提示仍在展示保留的数据。
 
-```bash
-pnpm run build:pages
-```
+公开 Scholar 页面可能暂时拒绝自动请求；此流程不使用代理或付费服务。没有读取旧模板的 `google-scholar-stats` 分支，旧模板的定时 workflow 已停用。
 
-生成结果位于 `out/`。
+### 立即刷新与排查
 
-## 发布到你的 GitHub
+打开仓库 **Actions → Deploy academic homepage → Run workflow → main**。
 
-与你的用户名严格匹配的主页仓库是：
+- `Refresh Google Scholar`：抓取、校验并保存数据。
+- `build` / `deploy`：构建并发布主页。
+- 同步失败时查看抓取步骤日志；无需删除已有 JSON 或修改成功时间。
+- GitHub 会暂停长期无仓库活动的公开仓库定时任务。若 Actions 显示 workflow 被禁用，点击 **Enable workflow** 后手动运行一次。
 
-`S-Chenhao/S-Chenhao.github.io`
+不需要配置 Scholar ID Secret：作者 ID 是公开信息，已固定在 workflow 参数中。
 
-发布地址将是：
+## 新论文确认
 
-`https://s-chenhao.github.io`
+查看 `data/scholar-pending.json`。这份列表只记录最近一次成功同步时尚未列入主页的论文，不会自动覆盖中英文文案或论文链接。
 
-建议先给旧模板创建备份分支，再把本项目文件放到该仓库的 `main` 分支。项目自带 `.github/workflows/deploy-pages.yml`，推送后会自动构建并发布。
+确认后，将论文添加到 `data/publications.json`，填写：
 
-第一次使用时，在 GitHub 仓库中打开：
+- `scholarId`：待确认条目中的完整 ID（建议保留，以便论文标题变化后仍能匹配）。
+- `title` / `titleZh`、`authors`、`venue`、`year`、`type`。
+- `url`：论文链接；`code`：可选的代码链接。
+- 其余字段参照已有条目。
 
-1. **Settings**
-2. **Pages**
-3. **Build and deployment → Source**
-4. 选择 **GitHub Actions**
-
-随后每次向 `main` 分支推送修改，主页都会自动更新。
+提交到 `main` 后自动同步并发布，已确认论文将从待确认列表中移除。已有论文的引用数优先按 Scholar ID 匹配，没有 ID 时按规范化后的标题匹配；成功同步后找不到对应论文时显示缺失标记，避免将旧引用数误标为最新数据。
 
 ## 常用修改位置
 
-- 个人介绍、中英文文字、论文列表、联系方式：`app/page.tsx`
-- 颜色、排版和响应式样式：`app/globals.css`
-- 搜索引擎与分享元数据：`app/layout.tsx`
+- 个人介绍、中英文文案、联系方式：`app/page.tsx`
+- 已确认论文及其译名、展示顺序、链接：`data/publications.json`
+- 最近成功同步的 Scholar 数据：`public/scholar.json`（由程序维护）
+- 新论文待确认列表：`data/scholar-pending.json`（由程序维护）
+- 页面样式：`app/globals.css`
+- 页面和分享元数据：`app/layout.tsx`
+- 个人照片：`public/profile.jpg`
 - 分享预览图：`public/og.png`
-- GitHub Pages 自动部署：`.github/workflows/deploy-pages.yml`
+- 同步程序及离线测试：`scripts/sync_scholar.py`、`scripts/test_sync_scholar.py`
+- 同步与发布：`.github/workflows/deploy-pages.yml`
 
-## 发布前请确认
+## 本地开发与验证
 
-当前邮箱 `222042011@link.cuhk.edu.cn` 与 ORCID `0009-0006-5314-4632` 来自公开论文/学术索引。发布前请确认你希望公开展示它们。
+需要 Node.js 22.13 或更高版本、pnpm 11.19 和 Python 3.12。
 
-论文数量与引用次数会随时间变化；页面当前写明这是 2026 年 9 月的快照，实时数据始终链接到 Google Scholar。
+```bash
+pnpm install --frozen-lockfile
+python3 -m unittest discover -s scripts -p 'test_*.py' -v
+pnpm run build:pages
+```
+
+静态文件输出到 `out/`。运行 `pnpm run dev` 可启动本地预览。
+
+手动同步：
+
+```bash
+python3 scripts/sync_scholar.py --scholar-id Vqf7dwEAAAAJ --curated data/publications.json
+```
+
+仓库 **Settings → Pages → Source** 应保持 **GitHub Actions**。

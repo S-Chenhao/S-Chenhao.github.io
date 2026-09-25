@@ -176,6 +176,7 @@ button { font: inherit; }
   border-bottom: 1px solid var(--ink);
 }
 .metrics-band > p { margin: 0; font: 10px/1.4 "Courier New", monospace; letter-spacing: .12em; text-transform: uppercase; }
+.metrics-band > p span { display: block; margin-top: 8px; line-height: 1.65; letter-spacing: .04em; text-transform: none; }
 .metrics-band dl { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; margin: 0; }
 .metrics-band dl div { display: flex; flex-direction: column-reverse; gap: 5px; }
 .metrics-band dt { font-size: 11px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
