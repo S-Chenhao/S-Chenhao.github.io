@@ -38,9 +38,11 @@ jobs:
       - name: Test Scholar parser and failure handling
         run: python -m unittest discover -s scripts -p 'test_*.py' -v
 
-      - name: Fetch and validate Google Scholar
+      - name: Fetch and validate Scholar via SerpApi
         timeout-minutes: 4
-        run: python scripts/sync_scholar.py --scholar-id Vqf7dwEAAAAJ --curated data/publications.json
+        env:
+          SERPAPI_API_KEY: ${{ secrets.SERPAPI_API_KEY }}
+        run: python scripts/sync_scholar_api.py --scholar-id Vqf7dwEAAAAJ --curated data/publications.json
 
       - name: Save successfully synchronized data
         run: |
